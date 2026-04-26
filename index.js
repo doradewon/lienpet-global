@@ -1,17 +1,19 @@
+// 1. 必须引入 path 模块，后面要用
 const express = require('express');
-const path = require('path');
+const path = require('path'); // <-- 新增这行
 const app = express();
-const port = 3000;
 
-// 托管 public 文件夹里的所有静态文件
-app.use(express.static(path.join(__dirname, 'public')));
+// 2. 静态文件服务：必须用 path.join(__dirname, 'public')
+// 不要写 app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public'))); // <-- 关键修改
 
-// 访问根目录时，直接返回 index.html
+// 3. 首页路由：如果有 sendFile，也要改成绝对路径
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html')); // <-- 关键修改
 });
 
-// 启动服务器
+// 4. 端口监听：必须用 process.env.PORT，不能写死 3000
+const port = process.env.PORT || 3000; // <-- 关键修改
 app.listen(port, () => {
-  console.log(`服务器运行成功！地址：http://localhost:${port}`);
+  console.log(`Server running on port ${port}`);
 });
