@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js" // <-- 必须有这行
+    "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.18.2" // <-- 必须有 express 依赖
+    "express": "^4.18.2"
   }
 }
