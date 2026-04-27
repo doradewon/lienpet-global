@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lienpet - Global Pet Products</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+        body{background:#f8f9fa;color:#333;}
+        .lang-bar{text-align:right;padding:15px 30px;}
+        select{padding:6px;border-radius:6px;border:1px #ccc solid;}
+        header{text-align:center;padding:40px 20px;background:#fff;border-bottom:1px #eee solid;}
+        h1{color:#2c6e49;margin-bottom:10px;}
+        .slogan{color:#666;font-size:18px;max-width:800px;margin:0 auto;}
+        .container{max-width:1200px;margin:40px auto;padding:0 20px;}
+        .tab{display:flex;gap:20px;margin-bottom:30px;}
+        .tab-item{padding:10px 20px;background:#2c6e49;color:#fff;border-radius:8px;cursor:pointer;}
+        .card{background:#fff;padding:20px;border-radius:12px;margin-bottom:20px;box-shadow:0 2px 8px #00000010;}
+        .btn{padding:8px 16px;background:#2c6e49;color:#fff;border:none;border-radius:6px;cursor:pointer;}
+        .admin-btn{position:fixed;bottom:30px;right:30px;padding:12px 20px;background:#000;color:#fff;border-radius:8px;}
+    </style>
+</head>
+<body>
+    <div class="lang-bar">
+        <select id="langSelect">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="ru">Русский</option>
+            <option value="zh-CN">中文</option>
+        </select>
+    </div>
+
+    <header>
+        <h1>Lienpet</h1>
+        <p class="slogan">Global Custom, Premium Pet Goods | One-stop Global Solution</p>
+    </header>
+
+    <div class="container">
+        <div class="tab">
+            <div class="tab-item" onclick="switchTab('stock')">In Stock</div>
+            <div class="tab-item" onclick="switchTab('custom')">OEM/ODM Custom</div>
+        </div>
+        <div id="content"></div>
+    </div>
+
+    <button class="admin-btn" onclick="location.href='/admin.html'">Admin</button>
+
+    <script>
+        // 谷歌翻译自动全局翻译
+        function autoTranslate(lang){
+            const script = document.createElement('script');
+            script.src = `https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit`;
+            window.googleTranslateElementInit = function(){
+                new google.translate.TranslateElement({
+                    pageLanguage: 'zh-CN',
+                    includedLanguages: 'en,es,it,fr,de,ru,zh-CN',
+                    defaultLanguage: lang,
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                },'google_translate_element');
+            }
+            document.body.appendChild(script);
+        }
+        document.getElementById("langSelect").addEventListener("change",e=>{
+            autoTranslate(e.target.value);
+        });
+        autoTranslate("en");
+
+        let currentTab = "stock";
+        function switchTab(tab){
+            currentTab = tab;
+            loadData();
+        }
+        async function loadData(){
+            const res = await fetch("/api/category");
+            const data = await res.json();
+            document.getElementById("content").innerHTML = `<div class="card">Load success, multi-language auto enabled</div>`;
+        }
+        loadData();
+    </script>
+    <div id="google_translate_element" style="display:none;"></div>
+</body>
+</html>
